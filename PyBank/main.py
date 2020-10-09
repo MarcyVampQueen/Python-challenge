@@ -21,6 +21,10 @@ with open(csvpath) as csvfile:
         rowCount += 1
         totalProfit_Loss += int(row[1])
         newPL = int(row[1])
+
+        # We don't care about the P/L change the first time
+        if rowCount == 1:
+            oldPL = newPL
         PL_change = newPL - oldPL
         PL_avgChange = PL_avgChange + PL_change
 
@@ -32,11 +36,20 @@ with open(csvpath) as csvfile:
             greatest["Decrease"] = PL_change
             greatest["DecMonth"] = row[0]
 
-        oldPL = int(row[1])
+        oldPL = newPL
 
-print("Financial Analysis\n-------------------------")
-print(f"Total Months: {rowCount}")
-print(f"Total: ${totalProfit_Loss}")
-print(f"Average Change: ${PL_avgChange/rowCount}")
-print(f"Greatest Increase in Profits: {greatest['IncMonth']} (${greatest['Increase']})")
-print(f"Greatest Decrease in Profits: {greatest['DecMonth']} (${greatest['Decrease']})")
+output = ["Financial Analysis\n-------------------------\n",
+    f"Total Months: {rowCount}\n",
+    f"Total: ${totalProfit_Loss}\n",
+    f"Average Change: ${PL_avgChange/(rowCount-1)}\n",
+    f"Greatest Increase in Profits: {greatest['IncMonth']} (${greatest['Increase']})\n",
+    f"Greatest Decrease in Profits: {greatest['DecMonth']} (${greatest['Decrease']})"
+    ]
+
+output_path = os.path.join(os.path.dirname(__file__), "analysis", "budget_analysis.txt")
+
+# Open the file using "write" mode. Specify the variable to hold the contents
+with open(output_path, 'w') as txtfile:
+    for line in output:
+        txtfile.write(line)
+        print(line, end='')
