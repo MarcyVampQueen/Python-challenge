@@ -19,11 +19,12 @@ with open(csvpath) as csvfile:
     # Read each row of data after the header
     for row in csvreader:
         rowCount += 1
-        totalProfit_Loss = totalProfit_Loss + int(row[1])
+        totalProfit_Loss += int(row[1])
         newPL = int(row[1])
         PL_change = newPL - oldPL
         PL_avgChange = PL_avgChange + PL_change
-        oldPL = int(row[1])
+
+        # Check for greatest
         if PL_change > greatest["Increase"]:
             greatest["Increase"] = PL_change
             greatest["IncMonth"] = row[0]
@@ -31,9 +32,11 @@ with open(csvpath) as csvfile:
             greatest["Decrease"] = PL_change
             greatest["DecMonth"] = row[0]
 
+        oldPL = int(row[1])
+
 print("Financial Analysis\n-------------------------")
 print(f"Total Months: {rowCount}")
 print(f"Total: ${totalProfit_Loss}")
-print(f"Average Change: ${PL_change/(rowCount)}")
+print(f"Average Change: ${PL_avgChange/rowCount}")
 print(f"Greatest Increase in Profits: {greatest['IncMonth']} (${greatest['Increase']})")
 print(f"Greatest Decrease in Profits: {greatest['DecMonth']} (${greatest['Decrease']})")
