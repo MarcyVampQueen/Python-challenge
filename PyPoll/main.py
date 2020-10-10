@@ -18,16 +18,19 @@ with open(csvpath) as csvfile:
     # Read each row of data and count
     for row in csvreader:
         totalVotes += 1
-
+        # Key won't exist the first time, so add it, otherwise increment
         if row[2] in candidates.keys():
             candidates[row[2]] += 1
         else:
             candidates[row[2]] = 1
 
+# Create the output lines as a list
 output = ["Election Results\n-------------------------\n", f"Total Votes: {totalVotes}\n-------------------------\n"]
+# Loop over stored candidates and determine % win
 for name, votes in candidates.items():
     percentWin = votes/totalVotes
     output.append(f"{name}: {'{0:.2%}'.format(percentWin)} ({votes})\n")
+    # Who's the winner?
     if percentWin > oldWin:
         winner = name
     oldWin = percentWin
