@@ -48,7 +48,7 @@ output = ["Financial Analysis\n-------------------------\n",
 
 output_path = os.path.join(os.path.dirname(__file__), "analysis", "budget_analysis.txt")
 
-# Open the file using "write" mode. Specify the variable to hold the contents
+# Open the file and write out each line to it and the terminal
 with open(output_path, 'w') as txtfile:
     for line in output:
         txtfile.write(line)
